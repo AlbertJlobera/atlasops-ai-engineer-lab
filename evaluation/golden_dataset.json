@@ -1,0 +1,226 @@
+[
+  {
+    "id": "q01",
+    "question": "What does CALC-017 mean and what should I check first?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "02_incident_runbook.md",
+        "section": "CALC-017 — Calculation timeout"
+      }
+    ]
+  },
+  {
+    "id": "q02",
+    "question": "Should I restart calculation-service as soon as CALC-017 appears?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "02_incident_runbook.md",
+        "section": "CALC-017 — Calculation timeout"
+      },
+      {
+        "source": "06_support_faq.md",
+        "section": "Should a service be restarted whenever a timeout occurs?"
+      }
+    ]
+  },
+  {
+    "id": "q03",
+    "question": "When should CALC-017 be escalated to the service owner?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "02_incident_runbook.md",
+        "section": "CALC-017 — Calculation timeout"
+      }
+    ]
+  },
+  {
+    "id": "q04",
+    "question": "Under what conditions can an automatic rollback occur?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "03_deployment_and_rollback.md",
+        "section": "Rollback"
+      }
+    ]
+  },
+  {
+    "id": "q05",
+    "question": "Can an automatic rollback be used if there is a non-backward-compatible database migration?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "03_deployment_and_rollback.md",
+        "section": "Important limitation"
+      }
+    ]
+  },
+  {
+    "id": "q06",
+    "question": "Can a Support-L1 user restart production services?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "06_support_faq.md",
+        "section": "Can Support-L1 restart production services?"
+      },
+      {
+        "source": "04_access_and_security.md",
+        "section": "Roles",
+        "subsection": "Support-L1"
+      }
+    ]
+  },
+  {
+    "id": "q07",
+    "question": "Can Support-L2 directly modify PostgreSQL records?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "04_access_and_security.md",
+        "section": "Roles",
+        "subsection": "Support-L2"
+      }
+    ]
+  },
+  {
+    "id": "q08",
+    "question": "If Redis and PostgreSQL show different calculation statuses, which one should I trust?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "05_known_issues.md",
+        "section": "KI-119 — Stale Redis calculation status"
+      },
+      {
+        "source": "06_support_faq.md",
+        "section": "Is Redis the authoritative source for calculation status?"
+      },
+      {
+        "source": "01_platform_overview.md",
+        "section": "Overview",
+        "subsection": "Redis"
+      }
+    ]
+  },
+  {
+    "id": "q09",
+    "question": "What should I check if the Kafka consumer group has more than 5,000 messages of lag for more than 10 minutes?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "02_incident_runbook.md",
+        "section": "Kafka consumer lag"
+      },
+      {
+        "source": "01_platform_overview.md",
+        "section": "Overview",
+        "subsection": "event-worker"
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Which endpoint can I use to check calculation-service health?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "01_platform_overview.md",
+        "section": "Overview",
+        "subsection": "calculation-service"
+      }
+    ]
+  },
+  {
+    "id": "q11",
+    "question": "What should I do if the documentation does not cover my question?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "06_support_faq.md",
+        "section": "What should I do if a question is not covered by the documentation?"
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "question": "Can production tokens be stored in the Git repository?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "04_access_and_security.md",
+        "section": "Secrets"
+      }
+    ]
+  },
+  {
+    "id": "q13",
+    "question": "The calculation-service health check returns 200, but CALC-017 errors keep increasing for one calculation type. Is the health check enough to rule out a problem?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "05_known_issues.md",
+        "section": "KI-127 — Health check healthy while one calculation type degrades"
+      },
+      {
+        "source": "02_incident_runbook.md",
+        "section": "CALC-017 — Calculation timeout"
+      }
+    ]
+  },
+  {
+    "id": "q14",
+    "question": "After a deployment, the HTTP 5xx rate rises to 8% for six minutes and there were no incompatible migrations. What could happen?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "03_deployment_and_rollback.md",
+        "section": "Rollback"
+      }
+    ]
+  },
+  {
+    "id": "q15",
+    "question": "The event-worker has high lag and PostgreSQL is saturated. Should I scale workers immediately?",
+    "answerable": true,
+    "expected_chunks": [
+      {
+        "source": "02_incident_runbook.md",
+        "section": "Kafka consumer lag"
+      }
+    ]
+  },
+  {
+    "id": "q16",
+    "question": "Which AWS region runs production?",
+    "answerable": false,
+    "expected_chunks": []
+  },
+  {
+    "id": "q17",
+    "question": "How much does the infrastructure cost per month?",
+    "answerable": false,
+    "expected_chunks": []
+  },
+  {
+    "id": "q18",
+    "question": "What is the on-call manager's phone number?",
+    "answerable": false,
+    "expected_chunks": []
+  },
+  {
+    "id": "q19",
+    "question": "Which exact PostgreSQL version is used?",
+    "answerable": false,
+    "expected_chunks": []
+  },
+  {
+    "id": "q20",
+    "question": "What is the contractual SLA with customers?",
+    "answerable": false,
+    "expected_chunks": []
+  }
+]
