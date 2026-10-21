@@ -1,16 +1,18 @@
-from app.rag import ask_rag
+from app.graph.workflow import compiled
 
 
 def main():
     question = input("Question: ")
 
-    result = ask_rag(question)
+    result = compiled.invoke({
+        "question": question
+    })
 
     print("\nANSWER:")
     print(result["answer"])
 
     print("\nSOURCES:")
-    for source in result["sources"]:
+    for source in result.get("sources", []):
         print(source)
 
 
