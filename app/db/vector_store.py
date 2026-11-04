@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 
 
 from app.embeddings import embeddings
-from app.config import CONNECTION, COLLECTION_NAME
+from app.config import CONNECTION
 
 
 
@@ -22,13 +22,13 @@ def check_database_connection():
         return False
 
 
-def get_vector_store():
+def get_vector_store(collection_name: str):
     if not check_database_connection():
         raise ConnectionError("PostgreSQL database is not available.")
 
     return PGVector(
         embeddings=embeddings,
-        collection_name=COLLECTION_NAME,
+        collection_name=collection_name,
         connection=CONNECTION,
         use_jsonb=True,
     )
