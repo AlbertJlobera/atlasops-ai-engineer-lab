@@ -1,6 +1,6 @@
 from app.graph.state import RAGState
 from app.config import SENSITIVE_TOOLS
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import ToolMessage, AIMessage
 
 
 def route_after_answerability(state: RAGState) -> str:
@@ -38,14 +38,36 @@ def route_after_code_retrieve(state):
 
     return "use_code_results"
 
-def route_after_agent(state: RAGState):
-    last_message = state["messages"][-1]
+def route_after_agent(state):
+
+    if state.get("llm_error"):
+        return "llm_failure"
+
+    messages = state.get(
+        "messages",
+        []
+    )
+
+    if not messages:
+        return "llm_failure"
+
+    last_message = messages[-1]
+
+    if not isinstance(
+        last_message,
+        AIMessage
+    ):
+        return "llm_failure"
 
     if not last_message.tool_calls:
         return "answerability"
 
     for tool_call in last_message.tool_calls:
-        if tool_call["name"] in SENSITIVE_TOOLS:
+
+        if (
+            tool_call["name"]
+            == "restart_service"
+        ):
             return "validate_action"
 
     return "tools"

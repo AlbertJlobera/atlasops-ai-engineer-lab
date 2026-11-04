@@ -2,8 +2,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
+import os
 
-CONNECTION = "postgresql+psycopg://atlasops:atlasops@localhost:5433/atlasops"
+
+CONNECTION = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg://atlasops:atlasops@localhost:5433/atlasops"
+)
 DOCS_COLLECTION = "atlasops_docs"
 CODE_COLLECTION = "atlasops_code"
 MODEL_EMBEDDING = "text-embedding-3-small"

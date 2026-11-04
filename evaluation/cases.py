@@ -392,16 +392,55 @@ EVALUATION_CASES = [
 },
 {
     "name": "both_docs_failure",
+
+    "question": (
+        "What does CALC-017 mean and "
+        "where is it implemented?"
+    ),
+
+    "user_role": "viewer",
+
+    "simulate_docs_failure": True,
+
+    "expected_source_route": "both",
+
     "expected_retrieval_warning": True,
     "expected_warning_in_answer": True,
 },
+
 {
     "name": "both_code_failure",
+
+    "question": (
+        "What does CALC-017 mean and "
+        "where is it implemented?"
+    ),
+
+    "user_role": "viewer",
+
+    "simulate_code_failure": True,
+
+    "expected_source_route": "both",
+
     "expected_retrieval_warning": True,
     "expected_warning_in_answer": True,
 },
+
 {
     "name": "both_backends_failure",
+
+    "question": (
+        "What does CALC-017 mean and "
+        "where is it implemented?"
+    ),
+
+    "user_role": "viewer",
+
+    "simulate_docs_failure": True,
+    "simulate_code_failure": True,
+
+    "expected_source_route": "both",
+
     "expected_docs_and_code_failure": True,
     "expected_both_failure_in_answer": True,
 },
