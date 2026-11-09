@@ -13,6 +13,7 @@ The available evidence may come from:
    - source code
    - configuration
    - implementation details
+   - source metadata such as file name, path, module, symbol or section
 
 2. Tool evidence:
    - current operational information
@@ -33,16 +34,31 @@ Tool evidence:
 
 Decision rules:
 
-- Return ANSWERABLE when the available evidence is sufficient to answer the user's
-  question accurately and without inventing unsupported information.
+- Return ANSWERABLE when the available evidence is sufficient to answer
+  the user's question accurately and without inventing unsupported information.
 
 - Evidence may come from RAG only, tool evidence only, or a combination of both.
 
-- If the question contains multiple parts, the evidence must be sufficient to
-  answer all important parts.
+- Source metadata is valid evidence.
+  For questions asking WHERE something is defined, configured or implemented,
+  the file path, source name, module or symbol shown with the relevant code
+  is sufficient evidence when the requested identifier or behavior is clearly
+  present in that code.
 
-- Do not mark a question ANSWERABLE merely because the evidence is related to
-  the topic.
+- Do not require the evidence to contain a natural-language sentence that
+  explicitly states the answer when the answer follows directly from
+  structured metadata and source code.
+
+- For source-code questions, direct code relationships count as evidence.
+  Examples include:
+  assignments, constants, function definitions, imports, calls,
+  exception handling and configuration values.
+
+- If the question contains multiple parts, the evidence must be sufficient
+  to answer all important parts.
+
+- Do not mark a question ANSWERABLE merely because the evidence is only
+  loosely related to the topic.
 
 - Do not use outside knowledge.
 
@@ -115,12 +131,13 @@ Available routes:
 
 - docs:
   Use when the question requires internal documentation,
-  procedures, explanations, known issues, operational knowledge
-  or the meaning of concepts or error codes.
+  procedures, explanations, known issues, operational knowledge,
+  troubleshooting guidance or the meaning of concepts or error codes.
 
 - code:
   Use when the question requires implementation details,
-  source code, functions, classes or where behavior is implemented.
+  source code, configuration, functions, classes, constants,
+  variables or where behavior is implemented.
 
 - both:
   Use when both documentation knowledge and code implementation
@@ -129,12 +146,67 @@ Available routes:
 - none:
   Use when no stored knowledge is required.
 
-Important rules:
+- code_change:
+  Use when the user explicitly requests creating, modifying,
+  fixing, refactoring or deleting source code.
+
+ROUTING PRIORITY:
+
+Determine the route primarily from what the user is asking for,
+not merely from the entities or terminology mentioned in the question.
+
+For example, an error code may require DOCS when asking what it means,
+but CODE when asking where it is configured or implemented.
+
+CODE ROUTING RULES:
+
+Route to "code" when the user asks where something is:
+
+- defined
+- declared
+- configured
+- assigned
+- implemented
+- imported
+- called
+- raised
+- handled
+
+Questions asking about:
+
+- source files
+- functions
+- classes
+- constants
+- variables
+- configuration values
+- implementation details
+- code behavior
+
+should normally route to "code".
+
+The presence of an error code, incident identifier, service name
+or operational terminology does NOT automatically imply "docs".
+
+DOCS ROUTING RULES:
+
+Route to "docs" when the user asks for stored knowledge such as:
+
+- meaning or explanation
+- documented behavior
+- procedures
+- runbooks
+- troubleshooting guidance
+- known issues
+- operational instructions
+
+RUNTIME ROUTING RULES:
 
 Current runtime or operational information does NOT require
 stored knowledge.
 
 Questions asking only for current:
+
 - service health or status
 - CPU or memory usage
 - database pool usage
@@ -146,20 +218,76 @@ Questions asking only for current:
 
 must use route "none".
 
-Do not select "docs" merely because the question mentions
-errors, logs, services or operational terminology.
+COMBINED QUESTIONS:
 
-Select "docs" only when the user asks for stored knowledge
-about those concepts, such as their meaning, explanation,
-procedure, troubleshooting guidance or documented behavior.
-
-If one part of the question requires stored documentation and
-another part requires runtime information, select "docs".
+If one part requires documentation and another runtime information,
+select "docs".
 
 If one part requires code and another runtime information,
 select "code".
 
-If documentation and code are both required, select "both".
+If documentation and code are both required,
+select "both".
 
-Return only the required source route.
+EXAMPLES:
+
+"Where is CALC-017 configured?"
+-> code
+
+"Where is CALCULATION_TIMEOUT_SECONDS defined?"
+-> code
+
+"Which function raises CalculationTimeoutError?"
+-> code
+
+"Which file handles calculation timeouts?"
+-> code
+
+"What does CALC-017 mean?"
+-> docs
+
+"How should an operator respond to CALC-017?"
+-> docs
+
+"What does CALC-017 mean and where is it configured?"
+-> both
+
+"Is calculation-service healthy right now?"
+-> none
+
+"What does CALC-017 mean and is calculation-service healthy right now?"
+-> docs
+
+CODE CHANGE ROUTING RULES:
+
+Route to "code_change" when the user's intent is to CHANGE
+the repository rather than merely inspect or explain it.
+
+Examples:
+
+"Change CALCULATION_TIMEOUT_SECONDS from 15 to 30 seconds."
+-> code_change
+
+"Fix the timeout handling in processor.py."
+-> code_change
+
+"Refactor calculate() to reduce duplication."
+-> code_change
+
+"Add validation for calculation_type."
+-> code_change
+
+"Where is CALCULATION_TIMEOUT_SECONDS defined?"
+-> code
+
+"How does timeout handling work?"
+-> code
+
+Return exactly one of:
+
+docs
+code
+both
+none
+code_change
 """

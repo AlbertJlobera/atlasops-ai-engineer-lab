@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from app.rag.retrieval import retrieve
-from app.rag.answerability import judge_answerability
+from app.graph.nodes.retrieval import retrieve
+from app.graph.nodes.answerability import judge_answerability
 
 
 GOLDEN_DATASET_PATH = Path(

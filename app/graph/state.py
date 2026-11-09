@@ -43,3 +43,13 @@ class RAGState(TypedDict, total=False):
     authorization_reason: str
 
     llm_error: str
+
+    # Code change proposal
+    code_change_proposal: dict | None
+    code_change_diff: str
+    code_change_validation: dict | None
+
+    pending_action: dict | None
+
+    code_publish_result: dict | None
+    code_publish_error: str

@@ -2,15 +2,14 @@ import os
 
 from functools import lru_cache
 
-from app.db.vector_store import get_vector_store
 from app.config import (
-    DOCS_COLLECTION,
     CODE_COLLECTION,
+    DOCS_COLLECTION,
 )
 
-
-DEFAULT_K = 3
-CODE_DEFAULT_K = 3
+from app.db.vector_store import (
+    get_vector_store,
+)
 
 
 @lru_cache(maxsize=1)
@@ -29,12 +28,12 @@ def get_code_vector_store():
 
 def retrieve_docs(
     question: str,
-    k=DEFAULT_K
+    k: int = 3,
 ):
     if (
         os.getenv(
             "SIMULATE_EMPTY_DOCS",
-            "false"
+            "false",
         ).lower()
         == "true"
     ):
@@ -43,12 +42,12 @@ def retrieve_docs(
     if (
         os.getenv(
             "SIMULATE_DOCS_FAILURE",
-            "false"
+            "false",
         ).lower()
         == "true"
     ):
         raise RuntimeError(
-            "Vector store is temporarily unavailable."
+            "Simulated document retrieval failure."
         )
 
     vector_store = (
@@ -60,26 +59,23 @@ def retrieve_docs(
         .similarity_search_with_score(
             question.strip(),
             k=k,
-            filter={
-                "legacy": False
-            },
         )
     )
 
 
 def retrieve_code(
     question: str,
-    k=CODE_DEFAULT_K
+    k: int = 3,
 ):
     if (
         os.getenv(
             "SIMULATE_CODE_FAILURE",
-            "false"
+            "false",
         ).lower()
         == "true"
     ):
         raise RuntimeError(
-            "Code vector store is temporarily unavailable."
+            "Simulated code retrieval failure."
         )
 
     vector_store = (
@@ -91,5 +87,8 @@ def retrieve_code(
         .similarity_search_with_score(
             question.strip(),
             k=k,
+            filter={
+                "provider": "github"
+            },
         )
     )
